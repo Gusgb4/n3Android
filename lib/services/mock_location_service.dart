@@ -34,7 +34,9 @@ class MockLocationService {
 
     // API moderna do geolocator (13.0.4+)
     final pos = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+      ),
     );
 
     return MockLocationReading(

@@ -8,13 +8,33 @@ import '../models/round.dart';
 import '../services/sim_clock.dart';
 import '../services/mock_location_service.dart';
 import '../services/csv_service.dart';
+import '../services/hive_storage.dart';
+import '../services/csv_export_service.dart';
 
 class AppState extends ChangeNotifier {
   final SimClock clock;
   final MockLocationService location;
   final CsvService csv;
+  final CsvExportService exporter;
 
-  AppState({required this.clock, required this.location, required this.csv});
+  AppState({
+    required this.clock,
+    required this.location,
+    required this.csv,
+  }) : exporter = CsvExportService(csv) {
+    // Carregar perfil salvo
+    final p = HiveStorage.getProfile();
+    if (p != null) {
+      _profile = StudentProfile(
+        id: p['id'],
+        name: p['name'],
+        deviceId: p['deviceId'],
+      );
+    }
+
+    // Carregar presenças salvas
+    _attendances.addAll(HiveStorage.loadAttendances());
+  }
 
   StudentProfile? _profile;
   final List<Attendance> _attendances = [];
@@ -40,6 +60,7 @@ class AppState extends ChangeNotifier {
 
   void setProfile(String id, String name) {
     _profile = StudentProfile(id: id, name: name, deviceId: 'dev_$id');
+    HiveStorage.saveProfile(id, name, 'dev_$id');
     notifyListeners();
   }
 
@@ -118,6 +139,7 @@ class AppState extends ChangeNotifier {
       );
 
       _attendances.add(entry);
+      HiveStorage.saveAttendance(entry);
       notifyListeners();
       return 'Presença confirmada!';
     } catch (e) {

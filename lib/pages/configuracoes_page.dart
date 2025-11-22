@@ -26,30 +26,36 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Configurações')),
-      body: Padding(
+      body: SingleChildScrollView(
+        // ← ← ← AQUI resolve o overflow
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Perfil do Aluno',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Perfil do Aluno',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             TextField(
-                controller: _name,
-                decoration: const InputDecoration(labelText: 'Seu nome')),
+              controller: _name,
+              decoration: const InputDecoration(labelText: 'Seu nome'),
+            ),
             TextField(
-                controller: _id,
-                decoration:
-                    const InputDecoration(labelText: 'Seu ID/matrícula')),
+              controller: _id,
+              decoration: const InputDecoration(labelText: 'Seu ID/matrícula'),
+            ),
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
                 if (_name.text.isNotEmpty && _id.text.isNotEmpty) {
                   widget.app.setProfile(_id.text, _name.text);
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Perfil atualizado!')));
+                    const SnackBar(content: Text('Perfil atualizado!')),
+                  );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Preencha nome e ID.')));
+                    const SnackBar(content: Text('Preencha nome e ID.')),
+                  );
                 }
               },
               child: const Text('Salvar'),
@@ -57,8 +63,9 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             const SizedBox(height: 24),
             const Divider(),
             const Text(
-                'Rodadas (simulação N2): Ativa: 10s, Intervalo: 15s, Total: 4',
-                style: TextStyle(color: Colors.black54)),
+              'Rodadas: Ativa: 10s, Intervalo: 15s, Total: 4',
+              style: TextStyle(color: Colors.black54),
+            ),
           ],
         ),
       ),

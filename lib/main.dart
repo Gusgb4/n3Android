@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'services/sim_clock.dart';
 import 'services/mock_location_service.dart';
 import 'services/csv_service.dart';
+
 import 'controllers/app_state.dart';
+
 import 'pages/splash_page.dart';
 import 'pages/home_aluno_page.dart';
 import 'pages/historico_page.dart';
 import 'pages/relatorio_page.dart';
 import 'pages/configuracoes_page.dart';
 
+/* MAIN N2
 void main() {
+  runApp(const ChamadaV2());
+}
+*/
+
+/*Alteracao no Main para adicionar o Hive*/
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('appBox');
   runApp(const ChamadaV2());
 }
 
