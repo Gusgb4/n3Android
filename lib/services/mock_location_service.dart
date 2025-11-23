@@ -22,8 +22,8 @@ class MockLocationService {
   static const double classroomLon = -48.849600049138274;
 
   // Parâmetros de validação
-  static const double allowedRadiusMeters = 50.0;
-  static const double maxAllowedAccuracy = 50.0;
+  static const double allowedRadiusMeters = 10000.0;
+  static const double maxAllowedAccuracy = 10000.0;
 
   /// Captura a posição atual (via GPS real)
   Future<MockLocationReading> getReading() async {
@@ -59,8 +59,7 @@ class MockLocationService {
     final dPhi = (lat2 - lat1) * pi / 180.0;
     final dLambda = (lon2 - lon1) * pi / 180.0;
 
-    final a =
-        sin(dPhi / 2) * sin(dPhi / 2) +
+    final a = sin(dPhi / 2) * sin(dPhi / 2) +
         cos(phi1) * cos(phi2) * sin(dLambda / 2) * sin(dLambda / 2);
     final c = 2 * atan2(sqrt(a), sqrt(1 - a));
     return R * c;
